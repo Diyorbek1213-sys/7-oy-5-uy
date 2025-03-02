@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addWishlist, removeWishlist } from '../lib/slices/productsSlice';
+import { addToCart, addWishlist, removeWishlist } from '../lib/slices/productsSlice';
 import { setToLocal } from '../lib/ls';
 
 const ProductCard = ({ p }) => {
 	const dispatch = useDispatch();
 	const { wishlist } = useSelector(state => state.products);
+	const { cart } = useSelector(state => state.products)
 
 	const addWishlistHandler = product => {
 		const item = wishlist.find(w => w.id == product.id);
@@ -19,6 +20,12 @@ const ProductCard = ({ p }) => {
 		const item = wishlist.find(w => w.id == id);
 		return item ? true : false;
 	};
+
+	function handleAdderToCart() {
+		dispatch(addToCart(p))
+		alert('Added to cart')
+	}
+
 	return (
 		<div className='mx-auto hover:shadow-xl transition-all hover:border-primary border border-transparent shadow relative rounded-2xl w-full max-w-[350px]'>
 			<div className='aspect-square mx-auto max-h-[300px] p-4 rounded-xl overflow-hidden'>
@@ -32,9 +39,8 @@ const ProductCard = ({ p }) => {
 					onClick={() => addWishlistHandler(p)}
 				>
 					<i
-						className={`${
-							hasWishlist(p.id) ? 'fa text-red-500' : 'fa-regular'
-						} fa-heart`}
+						className={`${hasWishlist(p.id) ? 'fa text-red-500' : 'fa-regular'
+							} fa-heart`}
 					></i>
 				</button>
 			</div>
@@ -47,17 +53,7 @@ const ProductCard = ({ p }) => {
 					<span className='text-3xl text-primary font-semibold'>
 						{p.price} ₽
 					</span>
-					<div className='relative hover:*:flex'>
-						<button className='w-10 aspect-square rounded-full flex items-center justify-center border border-primary text-primary cursor-pointer'>
-							<i className='fa fa-cart-plus'></i>
-						</button>
-						<div className='p-2 hidden bg-slate-100 border border-primary z-50  absolute top-[calc(100%+5px)] justify-center items-center w-[170px] left-1/2 -translate-x-1/2 rounded text-sm'>
-							<span>Добавить в корзину</span>
-							<div className='absolute top-0 -translate-y-full h-[13px] left-1/2 -translate-x-1/2'>
-								<i className='fa fa-caret-up text-primary'></i>
-							</div>
-						</div>
-					</div>
+					<button className='fa fa-cart-plus rounded-full p-3 cursor-pointer bg-violet-300' onClick={handleAdderToCart}></button>
 				</div>
 			</div>
 		</div>

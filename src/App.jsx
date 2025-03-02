@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Filter, Home, Navbar, Wishlist } from './components';
+import { Filter, Home, Navbar, Wishlist, Cart } from './components';
 import { Route, Routes } from 'react-router-dom';
 import {
 	setError,
@@ -10,6 +10,8 @@ import {
 import productsService from './service/products';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromLocal, setToLocal } from './lib/ls';
+import Register from './components/Register';
+import Login from './components/Login';
 const App = () => {
 	const { wishlist } = useSelector(state => state.products);
 	const dispatch = useDispatch();
@@ -45,6 +47,9 @@ const App = () => {
 				<Route path='/' element={<Home />} />
 				<Route path='/filter/:q' element={<Filter />} />
 				<Route path='/wishlist' element={<Wishlist />} />
+				<Route path='/cart' element={<Cart />} />
+				<Route path='/register' element={<Register />} />
+				<Route path='/login' element={<Login />} />
 			</Routes>
 		</div>
 	);
