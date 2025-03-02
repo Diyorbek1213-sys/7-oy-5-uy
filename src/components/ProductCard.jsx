@@ -1,6 +1,24 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addWishlist, removeWishlist } from '../lib/slices/productsSlice';
+import { setToLocal } from '../lib/ls';
 
 const ProductCard = ({ p }) => {
+	const dispatch = useDispatch();
+	const { wishlist } = useSelector(state => state.products);
+
+	const addWishlistHandler = product => {
+		const item = wishlist.find(w => w.id == product.id);
+		if (item) {
+			dispatch(removeWishlist(product.id));
+		} else {
+			dispatch(addWishlist(product));
+		}
+	};
+	const hasWishlist = id => {
+		const item = wishlist.find(w => w.id == id);
+		return item ? true : false;
+	};
 	return (
 		<div className='mx-auto hover:shadow-xl transition-all hover:border-primary border border-transparent shadow relative rounded-2xl w-full max-w-[350px]'>
 			<div className='aspect-square mx-auto max-h-[300px] p-4 rounded-xl overflow-hidden'>
@@ -9,6 +27,16 @@ const ProductCard = ({ p }) => {
 					className='w-full h-full object-contain'
 					alt={p.title}
 				/>
+				<button
+					className='absolute top-3 cursor-pointer left-3'
+					onClick={() => addWishlistHandler(p)}
+				>
+					<i
+						className={`${
+							hasWishlist(p.id) ? 'fa text-red-500' : 'fa-regular'
+						} fa-heart`}
+					></i>
+				</button>
 			</div>
 			<div className='px-5 pb-16'>
 				<h3 className='text-primary font-semibold text-lg line-clamp-2'>
